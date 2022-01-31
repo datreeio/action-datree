@@ -49,7 +49,8 @@ jobs:
         uses: hadorco/Datree-cli-action@main
         with:
           file: '**/*.yaml'
-          options: '--output simple --schema-version 1.20.0'
+          options: ''
+          token: ''
 ```
 <br/>
 
