@@ -1,0 +1,19 @@
+name: Datree CLI
+description: Use the Datree CLI in a github action
+author: hadarco
+inputs:
+  file:
+    description: the configuration file to be checked
+    required: true
+  options:
+    description: set the command options for your datree CLI
+    required: false
+  token:
+    description: your Datree CLI token
+    required: false
+runs:
+  using: docker
+  image: Dockerfile
+branding:
+  icon: 'terminal'
+  color: 'black'
