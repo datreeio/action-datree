@@ -9,7 +9,7 @@ if [ -z "$DATREE_TOKEN" ]; then
         echo "No token configured, see https://github.com/datreeio/action-datree for instructions"
         exit 1
     else
-        $DATREE_TOKEN = "$token"
+        DATREE_TOKEN="$token"
     fi
 fi
 
