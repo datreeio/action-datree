@@ -21,12 +21,12 @@ In your workflow, set this action as a step:
           options: '--output simple --schema-version 1.20.0'
           token: 'myAccountToken'
 ```
-<u>**file**</u> - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.
-**options** - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the test. In the above example, two of these arguments(--output and --schema-version) are passed.  
-**token** - your Datree account token. See the "Examples" section of this readme for an example that uses a token set as a "secret" variable.
+**file** (**required**) - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.  
+**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, two of these arguments(--output and --schema-version) are used.  
+**token** (**optional**) - your Datree account token. See the "Examples" section of this readme for an example that uses a token set as a "secret" variable.
 <br/><br/>
 # Examples
-Here is an example workflow that uses this action to run a Datree policy check on a all of the .yaml files under the current directory, on every push/pull request:
+Here is an example workflow that uses this action to run a Datree policy check on all of the .yaml files under the current directory, on every push/pull request:
 ```yaml
 on:
   push:
@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Run Datree's CLI
-        uses: hadorco/Datree-cli-action@main
+        uses: datreeio/action-datree@main
         with:
           file: '**/*.yaml'
           options: ''
