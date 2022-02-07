@@ -10,16 +10,16 @@ Then, configure your token:
 * Set DATREE_TOKEN as a [secret](https://docs.github.com/en/actions/reference/encrypted-secrets) or [environment](https://docs.github.com/en/actions/reference/environment-variables) variable (see "Examples" section of this readme).  
 <br/><br/>
 # Usage
-In your workflow, set this action as a step:
+In your workflow, set this action as a step. For example:
 ```
-- name: Run Datree's CLI
+- name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
           file: 'someDirectory/someFile.yaml'
-          options: '--output simple --schema-version 1.20.0'
+          options: '--schema-version 1.20.0'
 ```
 **file** (**required**) - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.  
-**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, two of these arguments(--output and --schema-version) are used.  
+**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, the policy check will use schema version 1.20.0 for the test.
 <br/><br/>
 # Examples
 Here is an example workflow that uses this action to run a Datree policy check on all of the .yaml files under the current directory, on every push/pull request:
@@ -46,7 +46,30 @@ jobs:
         with:
           file: '**/*.yaml'
           options: ''
-```
+```  
+Here is another example that runs a policy check on a single file in the root of the repository on every push, using a policy named "Staging". The output will be in simple text, with no colors or emojis:
+```yaml
+on:
+  push:
+    branches: [ main ]
+    
+env:
+  DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
+
+jobs:
+  k8s-policy-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          file: 'file.yaml'
+          options: '--policy Staging --output simple'
+```  
 <br/>
 
 # Output
