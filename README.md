@@ -54,8 +54,7 @@ jobs:
 ```
 <br/>
 
-<!--# Output
-The output of this action will look something like this:
+# Output
+The result of your policy checks will look like this:  
 
-![Alt text](/Resources/output.jpg?raw=true "Optional Title")
---!>
+![](/Resources/output.gif)
