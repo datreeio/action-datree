@@ -41,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         
-      - name: Run Datree's CLI
+      - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
           file: '**/*.yaml'
