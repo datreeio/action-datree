@@ -1,6 +1,6 @@
 # Overview
 The Datree CLI provides a policy enforcement solution to run automatic checks for rule violations in Kuberenetes configuration files.  
-This action runs the Datree CLI against given k8s configuration file/s in your repository.<br/>
+This action runs the Datree CLI against given k8s configuration file/s in your repository, featuring full Helm support.<br/>
 To learn more about Datree, visit the [datree website](https://www.datree.io/).
 <br/><br/>
 # Setup
@@ -19,7 +19,10 @@ In your workflow, set this action as a step. For example:
           options: '--schema-version 1.20.0'
 ```
 **file** (**required**) - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.  
-**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, the policy check will use schema version 1.20.0 for the test.
+**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  
+**isHelmChart** (**optional**) - a boolean argument that declares whether the file is a Helm chart. If this option is unused, the file will be considered as a regular yaml file.  
+**helmArguments** (**optional**) - the Helm arguments to be used, if the file is a Helm chart.  
+*For more information and examples of using this action with Helm, see the "Using Helm" section of this readme*
 <br/><br/>
 # Examples
 Here is an example workflow that uses this action to run a Datree policy check on all of the .yaml files under the current directory, on every push/pull request:
@@ -70,6 +73,20 @@ jobs:
           file: 'file.yaml'
           options: '--policy Staging --output simple'
 ```  
+<br/>
+
+# Using Helm
+This action enables performing policy checks on Helm charts as well as manifest files, by utilizing the [Datree Helm plugin](https://hub.datree.io/helm-plugin).  
+To test a Helm chart, simply set the "isHelmChart" parameter to "true", and add any Helm arguments you wish to use to the "helmArguments" parameter, like so:
+```
+- name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          file: 'myChartDirectory'
+          options: ''
+          isHelmChart: true
+          helmArguments: '--values values.yaml'
+```
 <br/>
 
 # Output
