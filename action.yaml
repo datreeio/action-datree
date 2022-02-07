@@ -1,12 +1,19 @@
 name: Datree CLI
 description: Use the Datree CLI in a github action
-author: Datree
+author: hadarco
 inputs:
   file:
-    description: the configuration file to be checked
+    description: the file/s to be tested
     required: true
   options:
-    description: set the command options for your datree CLI
+    description: the Datree CLI options to be used
+    required: false
+  isHelmChart:
+    description: is the desired file a Helm chart?
+    required: true
+    default: false
+  helmArguments:
+    description: the Helm arguments to be used
     required: false
 runs:
   using: docker
