@@ -6,10 +6,8 @@ To learn more about Datree, visit the [datree website](https://www.datree.io/).
 # Setup
 To get started, you will need to obtain your Datree account token. Follow the simple instructions described [here](https://hub.datree.io/account-token).
 <br/><br/>
-Then, configure your token using one of the following ways:
+Then, configure your token:
 * Set DATREE_TOKEN as a [secret](https://docs.github.com/en/actions/reference/encrypted-secrets) or [environment](https://docs.github.com/en/actions/reference/environment-variables) variable (see example at the bottom of this readme).  
-**OR**
-* Pass the token directly into the action, as described in the "Usage" section of this readme.
 <br/><br/>
 # Usage
 In your workflow, set this action as a step:
@@ -19,11 +17,9 @@ In your workflow, set this action as a step:
         with:
           file: 'someDirectory/someFile.yaml'
           options: '--output simple --schema-version 1.20.0'
-          token: 'myAccountToken'
 ```
 **file** (**required**) - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.  
 **options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, two of these arguments(--output and --schema-version) are used.  
-**token** (**optional**) - your Datree account token. See the "Examples" section of this readme for an example that uses a token set as a "secret" variable.
 <br/><br/>
 # Examples
 Here is an example workflow that uses this action to run a Datree policy check on all of the .yaml files under the current directory, on every push/pull request:
@@ -50,7 +46,6 @@ jobs:
         with:
           file: '**/*.yaml'
           options: ''
-          token: ''
 ```
 <br/>
 
