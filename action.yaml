@@ -2,10 +2,10 @@ name: Datree CLI
 description: Use the Datree CLI in a github action
 author: hadarco
 inputs:
-  file:
+  path:
     description: the file/s to be tested
     required: true
-  options:
+  cliArguments:
     description: the Datree CLI options to be used
     required: false
   isHelmChart:
