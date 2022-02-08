@@ -15,17 +15,20 @@ In your workflow, set this action as a step. For example:
 - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          file: 'someDirectory/someFile.yaml'
-          options: '--schema-version 1.20.0'
+          path: 'someDirectory/someFile.yaml'
+          cli-arguments: '--schema-version 1.20.0'
 ```
-**file** (**required**) - a path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory.  
-**options** (**optional**) - the desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  
-**isHelmChart** (**optional**) - a boolean argument that declares whether the file is a Helm chart. If this option is unused, the file will be considered as a regular yaml file.  
-**helmArguments** (**optional**) - the Helm arguments to be used, if the file is a Helm chart.  
+| Input | Required | Description |
+| --- | ----------- | --- |
+| **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. |
+| **cli-arguments** | No | The desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  |
+| **is-helm-chart** | No | A boolean argument that declares whether the file is a Helm chart. If this option is unused, the file will be considered as a regular yaml file. |
+| **helm-arguments** | No | The Helm arguments to be used, if the file is a Helm chart. |
+ 
 *For more information and examples of using this action with Helm, see the "Using Helm" section of this readme*
 <br/><br/>
 # Examples
-Here is an example workflow that uses this action to run a Datree policy check on all of the .yaml files under the current directory, on every push/pull request:
+Here is an example workflow that uses this action to run a Datree policy check on all of the k8s manifest files under the current directory, on every push/pull request:
 ```yaml
 on:
   push:
@@ -47,8 +50,8 @@ jobs:
       - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          file: '**/*.yaml'
-          options: ''
+          path: '**/*.yaml'
+          cli-arguments: '--only-k8s-files'
 ```  
 Here is another example that runs a policy check on a single file in the root of the repository on every push, using a policy named "Staging". The output will be in simple text, with no colors or emojis:
 ```yaml
@@ -70,22 +73,22 @@ jobs:
       - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          file: 'file.yaml'
-          options: '--policy Staging --output simple'
+          path: 'file.yaml'
+          cli-arguments: '--policy Staging --output simple'
 ```  
 <br/>
 
 # Using Helm
-This action enables performing policy checks on Helm charts as well as manifest files, by utilizing the [Datree Helm plugin](https://hub.datree.io/helm-plugin).  
+This action enables performing policy checks on Helm charts, by utilizing the [Datree Helm plugin](https://hub.datree.io/helm-plugin).  
 To test a Helm chart, simply set the "isHelmChart" parameter to "true", and add any Helm arguments you wish to use to the "helmArguments" parameter, like so:
 ```
 - name: Run Datree Policy Check
         uses: datreeio/action-datree@main
         with:
-          file: 'myChartDirectory'
-          options: ''
-          isHelmChart: true
-          helmArguments: '--values values.yaml'
+          path: 'myChartDirectory'
+          cli-arguments: ''
+          is-helm-chart: true
+          helm-arguments: '--values values.yaml'
 ```
 <br/>
 
