@@ -6,8 +6,9 @@ To learn more about Datree, visit the [datree website](https://www.datree.io/).
 # Setup
 Get started in 2 simple steps:
 * Obtain your Datree account token by following the instructions described [here](https://hub.datree.io/account-token).
-* Configure your token by setting DATREE_TOKEN as a [secret](https://docs.github.com/en/actions/reference/encrypted-secrets) or [environment](https://docs.github.com/en/actions/reference/environment-variables) variable (see "Examples" section of this readme).  
-<br/><br/>
+* Configure your token by setting DATREE_TOKEN as a [secret](https://docs.github.com/en/actions/reference/encrypted-secrets) or [environment](https://docs.github.com/en/actions/reference/environment-variables) variable (see "Examples" section of this readme).  <br/><br/>
+
+
 # Usage
 In your workflow, set this action as a step. For example:
 ```yaml
