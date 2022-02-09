@@ -21,8 +21,8 @@ In your workflow, set this action as a step. For example:
 | --- | ----------- | --- |
 | **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. |
 | **cliArguments** | No | The desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  |
-| **isHelmChart** | No | A boolean argument that declares whether the file is a Helm chart. If this option is unused, the file will be considered as a regular yaml file. |
-| **helmArguments** | No | The Helm arguments to be used, if the file is a Helm chart. |
+| **isHelmChart** | No | Specify whether the given path is a Helm chart. If this option is unused, the path will be considered as a regular yaml file. |
+| **helmArguments** | No | The Helm arguments to be used, if the path is a Helm chart. |
  
 *For more information and examples of using this action with Helm, see the "Using Helm" section of this readme*
 <br/><br/>
@@ -86,7 +86,7 @@ To test a Helm chart, simply set the "isHelmChart" parameter to "true", and add 
         with:
           path: 'myChartDirectory'
           cliArguments: ''
-          isHelmChart: true
+          isHelmChart: 'true'
           helmArguments: '--values values.yaml'
 ```
 <br/>
