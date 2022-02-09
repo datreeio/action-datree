@@ -1,8 +1,8 @@
 #!/bin/sh -l
 
-inputfile="$INPUT_FILE"
-options="$INPUT_OPTIONS"
-isHelmChart=$INPUT_ISHELMCHART
+inputpath="$INPUT_PATH"
+cliArguments="$INPUT_CLIARGUMENTS"
+isHelmChart="$INPUT_ISHELMCHART"
 helmArgs="$INPUT_HELMARGUMENTS"
 
 if [ -z "$DATREE_TOKEN" ]; then
@@ -16,7 +16,7 @@ if [ $isHelmChart ]; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | /bin/bash
     helm plugin install https://github.com/datreeio/helm-datree
     
-    helm datree test $inputfile $options -- $helmArgs
+    helm datree test $inputpath $cliArguments -- $helmArgs
 else
-    datree test $inputfile $options  
+    datree test $inputpath $cliArguments  
 fi
