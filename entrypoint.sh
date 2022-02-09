@@ -12,7 +12,7 @@ fi
 
 curl https://get.datree.io | /bin/bash
 
-if [ $isHelmChart ]; then
+if [ $isHelmChart == "true" ]; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | /bin/bash
     helm plugin install https://github.com/datreeio/helm-datree
     
