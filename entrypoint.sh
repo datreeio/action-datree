@@ -1,5 +1,4 @@
 #!/bin/sh -l
-set -ex
 
 inputpath="$INPUT_PATH"
 cliArguments="$INPUT_CLIARGUMENTS"
