@@ -40,7 +40,7 @@ env:
   DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
 
 jobs:
-  k8s-policy-check:
+  k8sPolicyCheck:
     runs-on: ubuntu-latest
 
     steps:
@@ -63,7 +63,7 @@ env:
   DATREE_TOKEN: ${{ secrets.DATREE_TOKEN }} 
 
 jobs:
-  k8s-policy-check:
+  k8sPolicyCheck:
     runs-on: ubuntu-latest
 
     steps:
