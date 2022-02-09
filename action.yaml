@@ -5,14 +5,14 @@ inputs:
   path:
     description: the file/s to be tested
     required: true
-  cli-arguments:
+  cliArguments:
     description: the Datree CLI options to be used
     required: false
-  is-helm-chart:
+  isHelmChart:
     description: is the desired file a Helm chart?
     required: true
     default: false
-  helm-arguments:
+  helmArguments:
     description: the Helm arguments to be used
     required: false
 runs:
