@@ -11,7 +11,7 @@ inputs:
   isHelmChart:
     description: is the desired file a Helm chart?
     required: true
-    default: false
+    default: 'false'
   helmArguments:
     description: the Helm arguments to be used
     required: false
