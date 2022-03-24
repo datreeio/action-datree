@@ -79,7 +79,7 @@ jobs:
 <br/>
 
 # Using Helm
-This action enables performing policy checks on Helm charts, by utilizing the [Datree Helm plugin](https://hub.datree.io/helm-plugin).  
+This action enables performing policy checks on Helm charts, by utilizing the [Datree Helm plugin](https://github.com/datreeio/helm-datree).  
 To test a Helm chart, simply set the "isHelmChart" parameter to "true", and add any Helm arguments you wish to use to the "helmArguments" parameter, like so:
 ```yaml
 - name: Run Datree Policy Check
