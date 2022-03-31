@@ -13,10 +13,10 @@ Get started in 2 simple steps:
 In your workflow, set this action as a step. For example:
 ```yaml
 - name: Run Datree Policy Check
-uses: datreeio/action-datree@main
-with:
-  path: 'someDirectory/someFile.yaml'
-  cliArguments: '--schema-version 1.20.0'
+  uses: datreeio/action-datree@main
+  with:
+    path: 'someDirectory/someFile.yaml'
+    cliArguments: '--schema-version 1.20.0'
 ```
 | Input | Required | Description |
 | --- | ----------- | --- |
