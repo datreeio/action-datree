@@ -24,8 +24,10 @@ In your workflow, set this action as a step. For example:
 | **cliArguments** | No | The desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  |
 | **isHelmChart** | No | Specify whether the given path is a Helm chart. If this option is unused, the path will be considered as a regular yaml file. |
 | **helmArguments** | No | The Helm arguments to be used, if the path is a Helm chart. |
- 
-*For more information and examples of using this action with Helm, see the "Using Helm" section of this readme*
+| **isKustomization** | No | Specify whether the given path is a directory containing a "kustomization.yaml" file. If this option is unused, the path will be considered as a regular yaml file. |
+| **kustomizeArguments** | No | The Kustomize arguments to be used, if the path is a Kustomization directory. |  
+
+*For more information and examples of using this action with Helm/Kustomize, see below*
 <br/><br/>
 # Examples
 Here is an example workflow that uses this action to run a Datree policy check on all of the k8s manifest files under the current directory, on every push/pull request:
@@ -87,10 +89,21 @@ To test a Helm chart, simply set the "isHelmChart" parameter to "true", and add 
         with:
           path: 'myChartDirectory'
           cliArguments: ''
-          isHelmChart: 'true'
+          isHelmChart: true
           helmArguments: '--values values.yaml'
 ```
 <br/>
+
+# Using Kustomize
+This action utilizes the Datree CLI's built-in Kustomize support. To use the plugin to test a kustomization, set "isKustomization" to 'true', and add any Kustomize arguments you wish to use to the "kustomizeArguments" setting, like so:
+```yaml
+- name: Run Datree Policy Check
+        uses: datreeio/action-datree@main
+        with:
+          path: 'my/kustomization/directory'
+          isKustomization: true
+          kustomizeArguments:
+```
 
 # Output
 The result of your policy checks will look like this:  
