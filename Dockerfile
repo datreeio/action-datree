@@ -1,7 +1,7 @@
-FROM node:14
+FROM datree/datreeci
 
-COPY entrypoint.sh /entrypoint.sh
+ADD entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT /entrypoint.sh
