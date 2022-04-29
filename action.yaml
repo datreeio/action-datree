@@ -9,11 +9,18 @@ inputs:
     description: the Datree CLI options to be used
     required: false
   isHelmChart:
-    description: is the desired file a Helm chart?
+    description: is the desired path a Helm chart?
     required: true
     default: 'false'
   helmArguments:
     description: the Helm arguments to be used
+    required: false
+  isKustomization:
+    description: is the desired path a Kustomization?
+    required: true
+    default: 'false'
+  kustomizeArguments:
+    description: the Kustomize arguments to be used
     required: false
 runs:
   using: docker
