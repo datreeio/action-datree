@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 inputpath="$INPUT_PATH"
 cliArguments="$INPUT_CLIARGUMENTS"
