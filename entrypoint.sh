@@ -11,6 +11,9 @@ printf "datree version: "
 datree version
 printf "\n"
 
+# enable recursive globbing (to support **/*.yaml for instance)
+shopt -s globstar
+
 if [ -z "$DATREE_TOKEN" ]; then
     printf "No account token configured, see https://github.com/datreeio/action-datree for instructions\n"
     exit 1
