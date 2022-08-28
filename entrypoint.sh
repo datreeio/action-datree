@@ -106,3 +106,5 @@ do
    
    ((INDEX = INDEX + 1))
 done
+
+exit $EXIT_STATUS
