@@ -75,8 +75,9 @@ else
    exit "$EXIT_STATUS"
 fi
 
+NUM_OF_TESTED_FILES=$(jq ".policyValidationResults | length" "$RESULT_JSON_PATH")
 INDEX=0
-while [[ $INDEX -lt $FILES_COUNT ]]
+while [[ $INDEX -lt $NUM_OF_TESTED_FILES ]]
 do
    FILENAME=$(jq ".policyValidationResults[$INDEX] | .fileName" "$RESULT_JSON_PATH")
    echo "**>> Filename: "$FILENAME"**" >> $GITHUB_STEP_SUMMARY
