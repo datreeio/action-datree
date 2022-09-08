@@ -109,3 +109,8 @@ This action utilizes the Datree CLI's built-in Kustomize support. To use the plu
 The result of your policy checks will look like this:  
 
 ![](/Resources/output.gif)
+
+In addition to Datree's standard output, Github's job summary feature is now supported 📝  
+Your job summary will look like this:
+
+![](/Resources/jobsummary.png)
