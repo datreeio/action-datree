@@ -23,15 +23,18 @@ if [ -z "$DATREE_TOKEN" ]; then
   exit 1
 fi
 
+EXIT_STATUS=0
+EXIT_STATUS_REPORT=0
+
 function create_report() {
-  EXIT_STATUS="$?"
+  EXIT_STATUS_REPORT="$?"
 
   # Github step summary
   RESULT_JSON_PATH="$HOME/.datree/lastPolicyCheck.json"
   if [ ! -f "$RESULT_JSON_PATH" ]; then
     echo ""
     echo "No report lastPolicyCheck.json found!"
-    exit $EXIT_STATUS
+    return
   fi
 
   PASSED_YAML=$(jq .evaluationSummary.passedYamlValidationCount "$RESULT_JSON_PATH")
@@ -71,7 +74,7 @@ function create_report() {
     echo "" >>"$GITHUB_STEP_SUMMARY"
   else
     echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
-    exit "$EXIT_STATUS"
+    return
   fi
 
   NUM_OF_TESTED_FILES=$(jq ".policyValidationResults | length" "$RESULT_JSON_PATH")
@@ -105,20 +108,17 @@ function create_report() {
   done
 }
 
-EXIT_STATUS=0
-
 if [ "$isHelmChart" = "true" ]; then
   while read -r helmchart; do
     dir="$(dirname "$helmchart")"
     echo "*** Proceeding to test Helm chart: $helmchart ***"
     set +e
     helm datree test "$dir" $cliArguments -- $helmArgs
-    exitcode=$?
-    set -e
-    if [ "$exitcode" -gt "$EXIT_STATUS" ]; then
-      EXIT_STATUS="$exitcode"
-    fi
     create_report
+    set -e
+    if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
+      EXIT_STATUS="$EXIT_STATUS_REPORT"
+    fi
     echo ""
   done < <(find "$inputpath" -type f -name 'Chart.y*ml')
 elif [ "$isKustomization" = "true" ]; then
@@ -127,6 +127,10 @@ elif [ "$isKustomization" = "true" ]; then
 else
   datree test "$inputpath" $cliArguments
   create_report
+fi
+
+if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
+  EXIT_STATUS="$EXIT_STATUS_REPORT"
 fi
 
 exit $EXIT_STATUS
