@@ -52,6 +52,7 @@ function create_report() {
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "☸️ Want guardrails on your cluster as well? Try out our [admission webhook!](https://github.com/datreeio/admission-webhook-datree#datree-admission-webhook) ☸️&nbsp;  " >>"$GITHUB_STEP_SUMMARY"
   echo "## Datree policy check results" >>"$GITHUB_STEP_SUMMARY"
+  echo "**Source path:** ${1}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Policy name:** ${POLICY_NAME}" >>"$GITHUB_STEP_SUMMARY"
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed YAML validation:** ${PASSED_YAML}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
@@ -114,7 +115,7 @@ if [ "$isHelmChart" = "true" ]; then
     echo "*** Proceeding to test Helm chart: $helmchart ***"
     set +e
     helm datree test "$dir" $cliArguments -- $helmArgs
-    create_report
+    create_report "$dir"
     set -e
     if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
       EXIT_STATUS="$EXIT_STATUS_REPORT"
@@ -123,10 +124,10 @@ if [ "$isHelmChart" = "true" ]; then
   done < <(find "$inputpath" -type f -name 'Chart.y*ml')
 elif [ "$isKustomization" = "true" ]; then
   datree kustomize test "$inputpath" $cliArguments -- $kustomizeArgs
-  create_report
+  create_report "$inputpath"
 else
   datree test "$inputpath" $cliArguments
-  create_report
+  create_report "$inputpath"
 fi
 
 if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
