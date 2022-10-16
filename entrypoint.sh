@@ -119,10 +119,10 @@ if [ "$isHelmChart" = "true" ]; then
     echo ""
   done < <(find "$inputpath" -type f -name 'Chart.y*ml')
 elif [ "$isKustomization" = "true" ]; then
-  datree kustomize test "$inputpath" $cliArguments -- $kustomizeArgs
+  datree kustomize test $inputpath $cliArguments -- $kustomizeArgs
   create_report "$inputpath"
 else
-  datree test "$inputpath" $cliArguments
+  datree test $inputpath $cliArguments
   create_report "$inputpath"
 fi
 
