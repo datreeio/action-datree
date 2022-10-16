@@ -20,7 +20,7 @@ In your workflow, set this action as a step. For example:
 ```
 | Input | Required | Description |
 | --- | ----------- | --- |
-| **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. |
+| **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. When `isHelmChart` is set, it will be recursive auto search in specified folder for all available helm projects. |
 | **cliArguments** | No | The desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  |
 | **isHelmChart** | No | Specify whether the given path is a Helm chart. If this option is unused, the path will be considered as a regular yaml file. |
 | **helmArguments** | No | The Helm arguments to be used, if the path is a Helm chart. |
