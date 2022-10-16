@@ -8,11 +8,7 @@ isKustomization="$INPUT_ISKUSTOMIZATION"
 kustomizeArgs="$INPUT_KUSTOMIZEARGUMENTS"
 
 printf "datree version: "
-if [ "$isHelmChart" = "true" ]; then
-  helm datree version
-else
-  datree version
-fi
+datree version
 printf "\n"
 
 # enable recursive globbing (to support **/*.yaml for instance)
