@@ -83,7 +83,12 @@ function create_report() {
 
     FAILED_IN_FILE=$(jq ".policyValidationResults[$INDEX] | .ruleResults | length" "$RESULT_JSON_PATH")
     for ((i = 0; i < "$FAILED_IN_FILE"; i++)); do
-      # VIOLATED_RULE_ID=$(jq ".policyValidationResults[$INDEX] | .ruleResults[$i] | .identifier" "$RESULT_JSON_PATH")
+      IS_SKIPPED=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[0] | .isSkipped" "$RESULT_JSON_PATH")
+      if [[ $IS_SKIPPED == "true" ]]; then
+        continue
+      fi
+
+      VIOLATED_RULE_ID=$(jq ".policyValidationResults[$INDEX] | .ruleResults[$i] | .identifier" "$RESULT_JSON_PATH")
       VIOLATED_RULE_NAME=$(jq ".policyValidationResults[$INDEX] | .ruleResults[$i] | .name" "$RESULT_JSON_PATH")
       VIOLATED_RULE_OCCURRENCES=$(jq ".policyValidationResults[$INDEX] | .ruleResults[$i] | .occurrencesDetails | length" "$RESULT_JSON_PATH")
       VIOLATED_RULE_FAIL_MESSAGE=$(jq ".policyValidationResults[$INDEX] | .ruleResults[$i] | .messageOnFailure" "$RESULT_JSON_PATH")
@@ -92,7 +97,12 @@ function create_report() {
       for ((j = 0; j < "$VIOLATED_RULE_OCCURRENCES"; j++)); do
         VIOLATED_RULE_METADATA_NAME=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[$j] | .metadataName" "$RESULT_JSON_PATH")
         VIOLATED_RULE_KIND=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[$j] | .kind" "$RESULT_JSON_PATH")
-        echo "metadata.name: $VIOLATED_RULE_METADATA_NAME (kind: $VIOLATED_RULE_KIND)" >>"$GITHUB_STEP_SUMMARY"
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metadata.name: $VIOLATED_RULE_METADATA_NAME (kind: $VIOLATED_RULE_KIND)" >>"$GITHUB_STEP_SUMMARY"
+
+        VIOLATED_RULE_SCHEMA_PATH=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[$j] | .failureLocations[0] | .schemaPath" "$RESULT_JSON_PATH")
+        VIOLATED_RULE_LINE=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[$j] | .failureLocations[0] | .failedErrorLine" "$RESULT_JSON_PATH")
+        VIOLATED_RULE_COLUMN=$(jq ".policyValidationResults[0] | .ruleResults[$i] | .occurrencesDetails[$j] | .failureLocations[0] | .failedErrorColumn" "$RESULT_JSON_PATH")
+        echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\> key: $VIOLATED_RULE_SCHEMA_PATH (line: $VIOLATED_RULE_LINE:$VIOLATED_RULE_COLUMN)" >> $GITHUB_STEP_SUMMARY
       done
       echo "💡 $VIOLATED_RULE_FAIL_MESSAGE  " >>"$GITHUB_STEP_SUMMARY"
       echo "" >>"$GITHUB_STEP_SUMMARY"
