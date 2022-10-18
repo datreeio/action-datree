@@ -20,9 +20,9 @@ In your workflow, set this action as a step. For example:
 ```
 | Input | Required | Description |
 | --- | ----------- | --- |
-| **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. When `isHelmChart` is set, it will be recursive auto search in specified folder for all available helm projects. |
+| **path** | Yes | A path to the file/s you wish to run your Datree test against. This can be a single file or a [Glob pattern](https://www.digitalocean.com/community/tools/glob) signifying a directory. |
 | **cliArguments** | No | The desired [Datree CLI arguments](https://hub.datree.io/cli-arguments) for the policy check. In the above example, schema version 1.20.0 will be used.  |
-| **isHelmChart** | No | Specify whether the given path is a Helm chart. If this option is unused, the path will be considered as a regular yaml file. |
+| **isHelmChart** | No | Specify whether the given path is a Helm chart. If this option is unused, the path will be considered as a regular yaml file. When `isHelmChart` is set, it will perform a recursive test for all helm charts inside the given path. |
 | **helmArguments** | No | The Helm arguments to be used, if the path is a Helm chart. |
 | **isKustomization** | No | Specify whether the given path is a directory containing a "kustomization.yaml" file. If this option is unused, the path will be considered as a regular yaml file. |
 | **kustomizeArguments** | No | The Kustomize arguments to be used, if the path is a Kustomization directory. |  
