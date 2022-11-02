@@ -111,6 +111,8 @@ The result of your policy checks will look like this:
 ![](/Resources/output.gif)
 
 In addition to Datree's standard output, Github's job summary feature is now supported 📝  
+It will be exported in the output of the step by the name of: *DATREE_SUMMARY*
+
 Your job summary will look like this:
 
 ![](/Resources/jobsummary.png)
