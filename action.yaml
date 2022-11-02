@@ -22,6 +22,9 @@ inputs:
   kustomizeArguments:
     description: the Kustomize arguments to be used
     required: false
+outputs:
+  DATREE_SUMMARY:
+    description: "Markdown containing the summary of the step"    
 runs:
   using: docker
   image: Dockerfile
