@@ -114,7 +114,7 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
 
-  cat $GITHUB_OUTPUT > ./summary.md
+  cp $GITHUB_STEP_SUMMARY ./summary.md
 }
 
 if [ "$isHelmChart" = "true" ]; then
