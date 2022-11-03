@@ -114,7 +114,8 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
 
-  echo "DATREE_SUMMARY=$(cat $GITHUB_OUTPUT | tr '\n' ' ')" >> $GITHUB_OUTPUT
+  { IFS= read -rd '' DATREE_SUMMARY < $GITHUB_OUTPUT;} 2>/dev/null
+  echo "DATREE_SUMMARY=$DATREE_SUMMARY" >> $GITHUB_OUTPUT
 }
 
 if [ "$isHelmChart" = "true" ]; then
