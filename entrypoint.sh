@@ -114,8 +114,7 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
 
-  export DATREE_SUMMARY=$(cat $GITHUB_STEP_SUMMARY)
-  echo "DATREE_SUMMARY=$DATREE_SUMMARY" >> $GITHUB_OUTPUT
+  echo "DATREE_SUMMARY=$(cat $GITHUB_OUTPUT | tr '\n' ' ')" >> $GITHUB_OUTPUT
 }
 
 if [ "$isHelmChart" = "true" ]; then
