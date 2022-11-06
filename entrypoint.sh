@@ -114,7 +114,7 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
   
-  echo "$GITHUB_STEP_SUMMARY" > "$HOME/summary.md"
+  echo "$GITHUB_STEP_SUMMARY" > "/tmp/datreeSummary.md"
 }
 
 if [ "$isHelmChart" = "true" ]; then
@@ -141,8 +141,5 @@ fi
 if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
   EXIT_STATUS="$EXIT_STATUS_REPORT"
 fi
-
-echo "$HOME"
-ls -al "$HOME"
 
 exit $EXIT_STATUS
