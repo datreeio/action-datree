@@ -71,6 +71,7 @@ function create_report() {
     echo "" >>"$GITHUB_STEP_SUMMARY"
   else
     echo "$GITHUB_STEP_SUMMARY" > "/datreeSummary.md"
+    ls -al /
     echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
     return
   fi
