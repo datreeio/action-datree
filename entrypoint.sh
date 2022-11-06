@@ -142,6 +142,7 @@ if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
   EXIT_STATUS="$EXIT_STATUS_REPORT"
 fi
 
+echo "$HOME"
 ls -al "$HOME"
 
 exit $EXIT_STATUS
