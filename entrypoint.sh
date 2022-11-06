@@ -70,7 +70,7 @@ function create_report() {
     echo "### Failed rules:" >>"$GITHUB_STEP_SUMMARY"
     echo "" >>"$GITHUB_STEP_SUMMARY"
   else
-    echo "$GITHUB_STEP_SUMMARY" > "/github/home/datreeSummary.md"
+    echo "$GITHUB_STEP_SUMMARY" > "/home/runner/datreeSummary.md"
     ls -al /
     echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
     return
