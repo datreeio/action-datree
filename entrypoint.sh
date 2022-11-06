@@ -114,7 +114,7 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
   
-  echo "$GITHUB_STEP_SUMMARY" > "$HOME/.datree/summary.md"
+  echo "$GITHUB_STEP_SUMMARY" > "$HOME/summary.md"
 }
 
 if [ "$isHelmChart" = "true" ]; then
