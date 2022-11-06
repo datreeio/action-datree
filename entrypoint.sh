@@ -70,8 +70,10 @@ function create_report() {
     echo "### Failed rules:" >>"$GITHUB_STEP_SUMMARY"
     echo "" >>"$GITHUB_STEP_SUMMARY"
   else
-    echo "$GITHUB_STEP_SUMMARY" > "$HOME/datreeSummary.md"
-    ls -al "$HOME"
+    mkdir "/home/tempo"
+    chmod 777 "/home/tempo"
+    echo "$GITHUB_STEP_SUMMARY" > "/home/tempo/datreeSummary.md"
+    ls -al "/home/tempo"
     echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
     return
   fi
@@ -116,9 +118,11 @@ function create_report() {
     ((INDEX = INDEX + 1))
   done
   
-  echo "$GITHUB_STEP_SUMMARY" > "$HOME/datreeSummary.md"
+  mkdir "/home/tempo"
+  chmod 777 "/home/tempo"
+  echo "$GITHUB_STEP_SUMMARY" > "/home/tempo/datreeSummary.md"
   ls -al /
-  cat "$HOME/datreeSummary.md"
+  cat "/home/tempo/datreeSummary.md"
 }
 
 if [ "$isHelmChart" = "true" ]; then
