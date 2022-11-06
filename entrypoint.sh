@@ -115,6 +115,7 @@ function create_report() {
   done
   
   echo "$GITHUB_STEP_SUMMARY" > "/datreeSummary.md"
+  chmod 777 /datreeSummary.md
   ls -al /
   cat "/datreeSummary.md"
 }
