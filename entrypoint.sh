@@ -115,6 +115,8 @@ function create_report() {
   done
   
   echo "$GITHUB_STEP_SUMMARY" > "/datreeSummary.md"
+  ls -al /
+  cat "/datreeSummary.md"
 }
 
 if [ "$isHelmChart" = "true" ]; then
