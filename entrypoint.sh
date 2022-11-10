@@ -44,7 +44,7 @@ function create_report() {
   FAILED_RULES=$(jq .policySummary.totalRulesFailed "$RESULT_JSON_PATH")
   SKIPPED=$(jq .policySummary.totalSkippedRules "$RESULT_JSON_PATH")
   FAILED_SCHEMA=$(jq ".k8sValidationResults | length" "$RESULT_JSON_PATH")
-  FAILED_YAML=$(jq .yamlValidationResults | length "$RESULT_JSON_PATH")
+  FAILED_YAML=$(jq ".yamlValidationResults | length "$RESULT_JSON_PATH")
 
   echo "<img src=\"https://raw.githubusercontent.com/datreeio/datree/main/images/datree_logo_color.svg\" width=\"350\"/>&nbsp;" >>"$GITHUB_STEP_SUMMARY"
   echo "" >>"$GITHUB_STEP_SUMMARY"
