@@ -41,8 +41,10 @@ function create_report() {
   CONFIGS_COUNT=$(jq .evaluationSummary.configsCount "$RESULT_JSON_PATH")
   FILES_COUNT=$(jq .evaluationSummary.filesCount "$RESULT_JSON_PATH")
   PASSED=$(jq .policySummary.totalPassedCount "$RESULT_JSON_PATH")
-  FAILED=$(jq .policySummary.totalRulesFailed "$RESULT_JSON_PATH")
+  FAILED_RULES=$(jq .policySummary.totalRulesFailed "$RESULT_JSON_PATH")
   SKIPPED=$(jq .policySummary.totalSkippedRules "$RESULT_JSON_PATH")
+  FAILED_SCHEMA=$(jq ".k8sValidationResults | length" "$RESULT_JSON_PATH")
+  FAILED_YAML=$(jq .yamlValidationResults | length "$RESULT_JSON_PATH")
 
   echo "<img src=\"https://raw.githubusercontent.com/datreeio/datree/main/images/datree_logo_color.svg\" width=\"350\"/>&nbsp;" >>"$GITHUB_STEP_SUMMARY"
   echo "" >>"$GITHUB_STEP_SUMMARY"
@@ -66,16 +68,29 @@ function create_report() {
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "" >>"$GITHUB_STEP_SUMMARY"
 
-  if [[ $FAILED -gt 0 ]]; then
+  if [[ $FAILED_YAML -eq 0 && $FAILED_SCHEMA -eq 0 && $FAILED_RULES -eq 0 ]]; then
+    echo "### 🥳 All validations passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
+    return
+  fi
+
+  if [[ $FAILED_SCHEMA -gt 0 ]]; then
+    echo "### k8s schema validation errors:" >> "$GITHUB_STEP_SUMMARY"
+    for ((i = 0; i < "$FAILED_SCHEMA"; i++)); do
+      FILENAME=$(jq ".k8sValidationResults[$i].path" "$RESULT_JSON_PATH")
+      echo "**>> Filename: $FILENAME**" >> "$GITHUB_STEP_SUMMARY"
+      for ((j = 0; j < $(jq ".k8sValidationResults[$i].errors | length" "$RESULT_JSON_PATH"); j++)); do
+        ERROR=$(jq ".k8sValidationResults[$i].errors[$j].errorMessage" "$RESULT_JSON_PATH")
+        echo "❌ $ERROR" >> "$GITHUB_STEP_SUMMARY"
+      done
+    done
+
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+  fi
+
+  if [[ $FAILED_RULES -gt 0 ]]; then
     echo "### Failed rules:" >>"$GITHUB_STEP_SUMMARY"
     echo "" >>"$GITHUB_STEP_SUMMARY"
-  else
-    mkdir "/home/tempo"
-    chmod 777 "/home/tempo"
-    echo "$GITHUB_STEP_SUMMARY" > "/home/tempo/datreeSummary.md"
-    ls -al "/home/tempo"
-    echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
-    return
   fi
 
   NUM_OF_TESTED_FILES=$(jq ".policyValidationResults | length" "$RESULT_JSON_PATH")
@@ -117,12 +132,6 @@ function create_report() {
 
     ((INDEX = INDEX + 1))
   done
-  
-  mkdir "/home/tempo"
-  chmod 777 "/home/tempo"
-  echo "$GITHUB_STEP_SUMMARY" > "/home/tempo/datreeSummary.md"
-  ls -al /
-  cat "/home/tempo/datreeSummary.md"
 }
 
 if [ "$isHelmChart" = "true" ]; then
