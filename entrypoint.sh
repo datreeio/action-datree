@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 inputpath="$INPUT_PATH"
 cliArguments="$INPUT_CLIARGUMENTS"
 isHelmChart="$INPUT_ISHELMCHART"
