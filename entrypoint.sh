@@ -51,13 +51,17 @@ function create_report() {
   echo "☸️ Want guardrails on your cluster as well? Try out our [admission webhook!](https://github.com/datreeio/admission-webhook-datree#datree-admission-webhook) ☸️&nbsp;  " >>"$GITHUB_STEP_SUMMARY"
   echo "## Datree policy check results" >>"$GITHUB_STEP_SUMMARY"
   echo "**Source path:** ${1}" >>"$GITHUB_STEP_SUMMARY"
-  echo "**Policy name:** "$POLICY_NAME"" >>"$GITHUB_STEP_SUMMARY"
+  if [[ -n "$POLICY_NAME" ]]; then 
+    echo "**Policy name:** "$POLICY_NAME"" >>"$GITHUB_STEP_SUMMARY"
+  fi
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed YAML validation:** ${PASSED_YAML}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed Kubernetes schema validation:** ${PASSED_K8S}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed policy check:** ${PASSED_POLICY}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   
   if [[ -n "$POLICY_NAME" ]]; then
+    echo "|   |   |" >>"$GITHUB_STEP_SUMMARY"
+    echo "|---|---|" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Enabled rules in policy ${POLICY_NAME}** | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
     echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
