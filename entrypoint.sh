@@ -80,7 +80,7 @@ function create_report() {
       echo "**>> Filename: $FILENAME**" >> "$GITHUB_STEP_SUMMARY"
       for ((j = 0; j < $(jq ".k8sValidationResults[$i].errors | length" "$RESULT_JSON_PATH"); j++)); do
         ERROR=$(jq ".k8sValidationResults[$i].errors[$j].ErrorMessage" "$RESULT_JSON_PATH")
-        echo "❌ $ERROR" >> "$GITHUB_STEP_SUMMARY"
+        echo "❌ k8s schema validation error: $ERROR" >> "$GITHUB_STEP_SUMMARY"
       done
     done
 
