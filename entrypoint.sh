@@ -41,37 +41,61 @@ function create_report() {
   CONFIGS_COUNT=$(jq .evaluationSummary.configsCount "$RESULT_JSON_PATH")
   FILES_COUNT=$(jq .evaluationSummary.filesCount "$RESULT_JSON_PATH")
   PASSED=$(jq .policySummary.totalPassedCount "$RESULT_JSON_PATH")
-  FAILED=$(jq .policySummary.totalRulesFailed "$RESULT_JSON_PATH")
+  FAILED_RULES=$(jq .policySummary.totalRulesFailed "$RESULT_JSON_PATH")
   SKIPPED=$(jq .policySummary.totalSkippedRules "$RESULT_JSON_PATH")
+  FAILED_SCHEMA=$(jq ".k8sValidationResults | length" "$RESULT_JSON_PATH")
+  FAILED_YAML=$(jq ".yamlValidationResults | length" "$RESULT_JSON_PATH")
 
   echo "<img src=\"https://raw.githubusercontent.com/datreeio/datree/main/images/datree_logo_color.svg\" width=\"350\"/>&nbsp;" >>"$GITHUB_STEP_SUMMARY"
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "☸️ Want guardrails on your cluster as well? Try out our [admission webhook!](https://github.com/datreeio/admission-webhook-datree#datree-admission-webhook) ☸️&nbsp;  " >>"$GITHUB_STEP_SUMMARY"
   echo "## Datree policy check results" >>"$GITHUB_STEP_SUMMARY"
   echo "**Source path:** ${1}" >>"$GITHUB_STEP_SUMMARY"
-  echo "**Policy name:** ${POLICY_NAME}" >>"$GITHUB_STEP_SUMMARY"
+  if [[ -n "$POLICY_NAME" ]]; then 
+    echo "**Policy name:** "$POLICY_NAME"" >>"$GITHUB_STEP_SUMMARY"
+  fi
   echo "" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed YAML validation:** ${PASSED_YAML}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed Kubernetes schema validation:** ${PASSED_K8S}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed policy check:** ${PASSED_POLICY}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
+  
+  if [[ -n "$POLICY_NAME" ]]; then
+    echo "| ✹✹ | ✹✹ |" >>"$GITHUB_STEP_SUMMARY"
+    echo "|---|---|" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Enabled rules in policy** | <div align=\"center\">**${TOTAL_RULES}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules skipped** | <div align=\"center\">**${SKIPPED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules failed** ⛔ | <div align=\"center\">**${FAILED_RULES}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules passed** ✅ | <div align=\"center\">**${PASSED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **See all rules in policy** | <div align=\"center\">**[https://app.datree.io](https://app.datree.io)**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+  fi
 
-  echo "| Enabled rules in policy ${POLICY_NAME} | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
-  echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules skipped** | <div align=\"center\">**${SKIPPED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules failed** ⛔ | <div align=\"center\">**${FAILED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules passed** ✅ | <div align=\"center\">**${PASSED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **See all rules in policy** | <div align=\"center\">**[https://app.datree.io](https://app.datree.io)**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "" >>"$GITHUB_STEP_SUMMARY"
-  echo "" >>"$GITHUB_STEP_SUMMARY"
+  if [[ $FAILED_YAML -eq 0 && $FAILED_SCHEMA -eq 0 && $FAILED_RULES -eq 0 ]]; then
+    echo "### 🥳 All validations passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
+    return
+  fi
 
-  if [[ $FAILED -gt 0 ]]; then
+  if [[ $FAILED_SCHEMA -gt 0 ]]; then
+    echo "### Schema validation errors:" >> "$GITHUB_STEP_SUMMARY"
+    for ((i = 0; i < "$FAILED_SCHEMA"; i++)); do
+      FILENAME=$(jq ".k8sValidationResults[$i].path" "$RESULT_JSON_PATH")
+      echo "**>> Filename: $FILENAME**" >> "$GITHUB_STEP_SUMMARY"
+      for ((j = 0; j < $(jq ".k8sValidationResults[$i].errors | length" "$RESULT_JSON_PATH"); j++)); do
+        ERROR=$(jq ".k8sValidationResults[$i].errors[$j].ErrorMessage" "$RESULT_JSON_PATH")
+        echo "❌ k8s schema validation error: $ERROR" >> "$GITHUB_STEP_SUMMARY"
+      done
+    done
+
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+  fi
+
+  if [[ $FAILED_RULES -gt 0 ]]; then
     echo "### Failed rules:" >>"$GITHUB_STEP_SUMMARY"
     echo "" >>"$GITHUB_STEP_SUMMARY"
-  else
-    echo "### 🥳 All rules passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
-    return
   fi
 
   NUM_OF_TESTED_FILES=$(jq ".policyValidationResults | length" "$RESULT_JSON_PATH")
