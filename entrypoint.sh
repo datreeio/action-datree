@@ -63,7 +63,6 @@ function create_report() {
     echo "|   |   |" >>"$GITHUB_STEP_SUMMARY"
     echo "|---|---|" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Enabled rules in policy ${POLICY_NAME}** | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
-    echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Total rules skipped** | <div align=\"center\">**${SKIPPED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
