@@ -36,7 +36,7 @@ function create_report() {
   PASSED_YAML=$(jq .evaluationSummary.passedYamlValidationCount "$RESULT_JSON_PATH")
   PASSED_K8S=$(jq .evaluationSummary.k8sValidation "$RESULT_JSON_PATH" | awk -F[\"/] '{print $2}')
   PASSED_POLICY=$(jq .evaluationSummary.passedPolicyValidationCount "$RESULT_JSON_PATH")
-  POLICY_NAME=$(jq .policySummary.policyName "$RESULT_JSON_PATH" | tr -d '"')
+  POLICY_NAME=$(jq ".policySummary.policyName" "$RESULT_JSON_PATH" | tr -d '"')
   TOTAL_RULES=$(jq .policySummary.totalRulesInPolicy "$RESULT_JSON_PATH")
   CONFIGS_COUNT=$(jq .evaluationSummary.configsCount "$RESULT_JSON_PATH")
   FILES_COUNT=$(jq .evaluationSummary.filesCount "$RESULT_JSON_PATH")
