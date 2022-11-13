@@ -36,7 +36,7 @@ function create_report() {
   PASSED_YAML=$(jq .evaluationSummary.passedYamlValidationCount "$RESULT_JSON_PATH")
   PASSED_K8S=$(jq .evaluationSummary.k8sValidation "$RESULT_JSON_PATH" | awk -F[\"/] '{print $2}')
   PASSED_POLICY=$(jq .evaluationSummary.passedPolicyValidationCount "$RESULT_JSON_PATH")
-  POLICY_NAME=$(jq .policySummary.policyName "$RESULT_JSON_PATH" | awk -F[\"\"] '{print $2}')
+  POLICY_NAME=$(jq .policySummary.policyName "$RESULT_JSON_PATH" | tr -d '"')
   TOTAL_RULES=$(jq .policySummary.totalRulesInPolicy "$RESULT_JSON_PATH")
   CONFIGS_COUNT=$(jq .evaluationSummary.configsCount "$RESULT_JSON_PATH")
   FILES_COUNT=$(jq .evaluationSummary.filesCount "$RESULT_JSON_PATH")
@@ -57,7 +57,7 @@ function create_report() {
   echo "**Passed Kubernetes schema validation:** ${PASSED_K8S}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed policy check:** ${PASSED_POLICY}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
 
-  echo "| Enabled rules in policy ${POLICY_NAME} | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
+  echo "| **Enabled rules in policy ${POLICY_NAME}** | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
   echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
   echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
   echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
@@ -74,7 +74,7 @@ function create_report() {
   fi
 
   if [[ $FAILED_SCHEMA -gt 0 ]]; then
-    echo "### k8s schema validation errors:" >> "$GITHUB_STEP_SUMMARY"
+    echo "### Schema validation errors:" >> "$GITHUB_STEP_SUMMARY"
     for ((i = 0; i < "$FAILED_SCHEMA"; i++)); do
       FILENAME=$(jq ".k8sValidationResults[$i].path" "$RESULT_JSON_PATH")
       echo "**>> Filename: $FILENAME**" >> "$GITHUB_STEP_SUMMARY"
