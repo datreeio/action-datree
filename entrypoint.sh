@@ -36,7 +36,7 @@ function create_report() {
   PASSED_YAML=$(jq .evaluationSummary.passedYamlValidationCount "$RESULT_JSON_PATH")
   PASSED_K8S=$(jq .evaluationSummary.k8sValidation "$RESULT_JSON_PATH" | awk -F[\"/] '{print $2}')
   PASSED_POLICY=$(jq .evaluationSummary.passedPolicyValidationCount "$RESULT_JSON_PATH")
-  POLICY_NAME=$(jq .policySummary.policyName "$RESULT_JSON_PATH")
+  POLICY_NAME=$(jq .policySummary.policyName "$RESULT_JSON_PATH" | awk -F[\"\"] '{print $2}')
   TOTAL_RULES=$(jq .policySummary.totalRulesInPolicy "$RESULT_JSON_PATH")
   CONFIGS_COUNT=$(jq .evaluationSummary.configsCount "$RESULT_JSON_PATH")
   FILES_COUNT=$(jq .evaluationSummary.filesCount "$RESULT_JSON_PATH")
@@ -56,17 +56,19 @@ function create_report() {
   echo "**Passed YAML validation:** ${PASSED_YAML}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed Kubernetes schema validation:** ${PASSED_K8S}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   echo "**Passed policy check:** ${PASSED_POLICY}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
-
-  echo "| **Enabled rules in policy ${POLICY_NAME}** | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
-  echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules skipped** | <div align=\"center\">**${SKIPPED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules failed** ⛔ | <div align=\"center\">**${FAILED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **Total rules passed** ✅ | <div align=\"center\">**${PASSED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "| **See all rules in policy** | <div align=\"center\">**[https://app.datree.io](https://app.datree.io)**</div> |" >>"$GITHUB_STEP_SUMMARY"
-  echo "" >>"$GITHUB_STEP_SUMMARY"
-  echo "" >>"$GITHUB_STEP_SUMMARY"
+  
+  if [[ -n "$POLICY_NAME" ]]; then
+    echo "| **Enabled rules in policy ${POLICY_NAME}** | ${TOTAL_RULES} |" >>"$GITHUB_STEP_SUMMARY"
+    echo "|-|-|" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules evaluated** | <div align=\"center\">**$((TOTAL_RULES * FILES_COUNT))**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules skipped** | <div align=\"center\">**${SKIPPED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules failed** ⛔ | <div align=\"center\">**${FAILED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **Total rules passed** ✅ | <div align=\"center\">**${PASSED}**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| **See all rules in policy** | <div align=\"center\">**[https://app.datree.io](https://app.datree.io)**</div> |" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+    echo "" >>"$GITHUB_STEP_SUMMARY"
+  fi
 
   if [[ $FAILED_YAML -eq 0 && $FAILED_SCHEMA -eq 0 && $FAILED_RULES -eq 0 ]]; then
     echo "### 🥳 All validations passed successfully! 🥳" >>"$GITHUB_STEP_SUMMARY"
