@@ -60,7 +60,7 @@ function create_report() {
   echo "**Passed policy check:** ${PASSED_POLICY}/${FILES_COUNT}" >>"$GITHUB_STEP_SUMMARY"
   
   if [[ -n "$POLICY_NAME" ]]; then
-    echo "| <!-- -->    | <!-- -->    |" >>"$GITHUB_STEP_SUMMARY"
+    echo "| &nbsp;    | &nbsp;    |" >>"$GITHUB_STEP_SUMMARY"
     echo "|---|---|" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Enabled rules in policy ${POLICY_NAME}** | <div align=\"center\">**${TOTAL_RULES}**</div> |" >>"$GITHUB_STEP_SUMMARY"
     echo "| **Configs tested against policy** | <div align=\"center\">**${CONFIGS_COUNT}**</div> |" >>"$GITHUB_STEP_SUMMARY"
