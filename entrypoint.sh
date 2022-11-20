@@ -153,6 +153,8 @@ if [ "$isHelmChart" = "true" ]; then
         EXIT_STATUS="$EXIT_STATUS_REPORT"
       fi
       echo ""
+    else 
+      echo "skipping check on $helmchart as it is of type library"
     fi
   done < <(find "$inputpath" -type f -name 'Chart.y*ml')
 elif [ "$isKustomization" = "true" ]; then
