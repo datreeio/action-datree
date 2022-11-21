@@ -142,15 +142,20 @@ function create_report() {
 if [ "$isHelmChart" = "true" ]; then
   while read -r helmchart; do
     dir="$(dirname "$helmchart")"
-    echo "*** Proceeding to test Helm chart: $helmchart ***"
-    set +e
-    helm datree test "$dir" $cliArguments -- $helmArgs
-    create_report "$dir"
-    set -e
-    if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
-      EXIT_STATUS="$EXIT_STATUS_REPORT"
+    chart_type=`cat $helmchart|grep "type:"|cut -d' ' -f 2`
+    if [ "$chart_type" != "library" ]; then
+      echo "*** Proceeding to test Helm chart: $helmchart ***"
+      set +e
+      helm datree test "$dir" $cliArguments -- $helmArgs
+      create_report "$dir"
+      set -e
+      if [ "$EXIT_STATUS_REPORT" -gt "$EXIT_STATUS" ]; then
+        EXIT_STATUS="$EXIT_STATUS_REPORT"
+      fi
+      echo ""
+    else 
+      echo "skipping check on $helmchart as it is of type library"
     fi
-    echo ""
   done < <(find "$inputpath" -type f -name 'Chart.y*ml')
 elif [ "$isKustomization" = "true" ]; then
   datree kustomize test $inputpath $cliArguments -- $kustomizeArgs
