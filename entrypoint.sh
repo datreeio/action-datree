@@ -166,11 +166,11 @@ elif [ "$isKustomization" = "true" ]; then
   datree kustomize test $inputpath $cliArguments -- $kustomizeArgs
   create_report "$inputpath"
 else
-  if [ -n "$outputFile" ]; then
+  #if [ -n "$outputFile" ]; then
     datree test $inputpath $cliArguments >"$outputFile"
-  else
-    datree test $inputpath $cliArguments
-  fi
+  #else
+  #  datree test $inputpath $cliArguments
+  #fi
   create_report "$inputpath"
 fi
 
