@@ -168,9 +168,9 @@ elif [ "$isKustomization" = "true" ]; then
 else
   outputPath=""
   if [ -n "$outputFile" ]; then
-    outputPath="'>' $outputFile"
+    outputPath="> $outputFile"
   fi
-  datree test $inputpath $cliArguments $outputPath
+  datree test $inputpath $cliArguments "$outputPath"
   create_report "$inputpath"
 fi
 
