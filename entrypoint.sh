@@ -168,7 +168,8 @@ else
   if [ -n "$outputFile" ]; then
     outputPath="> $outputFile"
   fi
-  datree test $inputpath $cliArguments "$outputPath"
+  echo "lets see: $outputPath"
+  datree test $inputpath $cliArguments $outputPath
   create_report "$inputpath"
 fi
 
