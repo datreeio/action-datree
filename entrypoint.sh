@@ -168,6 +168,9 @@ elif [ "$isKustomization" = "true" ]; then
 else
   #if [ -n "$outputFile" ]; then
   datree test $inputpath $cliArguments > /tmp/output.sarif
+  
+  echo ""
+  ls -al /tmp
   #else
   #  datree test $inputpath $cliArguments
   #fi
