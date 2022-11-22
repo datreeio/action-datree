@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 inputpath="$INPUT_PATH"
 cliArguments="$INPUT_CLIARGUMENTS"
 outputFile="$INPUT_OUTPUTFILE"
