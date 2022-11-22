@@ -4,6 +4,7 @@ set -x
 
 inputpath="$INPUT_PATH"
 cliArguments="$INPUT_CLIARGUMENTS"
+outputFile="$INPUT_OUTPUTFILE"
 isHelmChart="$INPUT_ISHELMCHART"
 helmArgs="$INPUT_HELMARGUMENTS"
 isKustomization="$INPUT_ISKUSTOMIZATION"
@@ -165,7 +166,11 @@ elif [ "$isKustomization" = "true" ]; then
   datree kustomize test $inputpath $cliArguments -- $kustomizeArgs
   create_report "$inputpath"
 else
-  datree test $inputpath ${cliArguments}
+  outputPath=""
+  if [ -n "$outputFile" ]; then
+    outputPath="> $outputFile"
+  fi
+  datree test $inputpath $cliArguments $outputPath
   create_report "$inputpath"
 fi
 
