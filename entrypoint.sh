@@ -162,7 +162,8 @@ elif [ "$isKustomization" = "true" ]; then
   create_report "$inputpath"
 else
   if [[ "$cliArguments" == *"sarif"* ]]; then
-    datree test $inputpath $cliArguments > output.sarif
+    echo "A file named 'datree.sarif' will be created containing your test results"
+    datree test $inputpath $cliArguments > datree.sarif
   else
     datree test $inputpath $cliArguments
   fi
