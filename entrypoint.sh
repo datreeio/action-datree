@@ -167,8 +167,7 @@ elif [ "$isKustomization" = "true" ]; then
   create_report "$inputpath"
 else
   if [[ "$cliArguments" == *"sarif"* ]]; then
-    datree test $inputpath $cliArguments > "$HOME"/output.sarif
-    ls -al "$HOME"
+    datree test $inputpath $cliArguments > output.sarif
   else
     datree test $inputpath $cliArguments
   fi
