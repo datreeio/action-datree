@@ -107,13 +107,13 @@ This action utilizes the Datree CLI's built-in Kustomize support. To use the plu
 
 # Github Code Scanning (SARIF)
 You can upload your policy check results to Github's code scanning to be displayed as security alerts by doing the following:
-* Save your policy check results as a SARIF file by setting `-o sarif` in the CLI arguments
-* Upload the output file to Github by adding the following step to your workflow:
+* Set `-o sarif` in the CLI arguments of this action (this will automatically create a file named `datree.sarif` containing your test results)
+* Upload the SARIF file to Github by adding the following step to your workflow:
 ```
 - name: Upload analysis results to GitHub
   uses: github/codeql-action/upload-sarif@v2
   with:
-    sarif_file: output.sarif  # The path to your SARIF output file
+    sarif_file: datree.sarif
     wait-for-processing: true
 ```
 
