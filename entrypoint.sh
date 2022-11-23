@@ -166,14 +166,12 @@ elif [ "$isKustomization" = "true" ]; then
   datree kustomize test $inputpath $cliArguments -- $kustomizeArgs
   create_report "$inputpath"
 else
-  #if [ -n "$outputFile" ]; then
-  datree test $inputpath $cliArguments > /tmp/output.sarif
-  
-  echo ""
-  ls -al /tmp
-  #else
-  #  datree test $inputpath $cliArguments
-  #fi
+  if [ -n "$outputFile" ]; then
+    datree test $inputpath $cliArguments > $outputFile
+    ls -al /tmp
+  else
+    datree test $inputpath $cliArguments
+  fi
   create_report "$inputpath"
 fi
 
